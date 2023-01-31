@@ -1,0 +1,312 @@
+Name = Retesh Doifode
+Reg no = 2020BIT034
+
+A) Searching Algorithms
+
+1) Linear search:
+
+#include<iostream>
+using namespace std;
+int linearSearch(int arr[], int n, int target){
+    for(int i=0; i<n; i++){
+        if(arr[i]==target){
+            return i;
+        }
+        
+    }
+    return -1;
+}
+int main(){
+    int arr[]={3,6,7,8,9,14,17};
+    int n= sizeof(arr)/sizeof(int);
+    cout<<linearSearch(arr,n,14);
+    return 0;
+}
+
+
+
+output : 5   // index of target 14
+
+
+
+2) Binary search
+
+
+#include<iostream>
+using namespace std;
+
+int binarySearch(int arr[], int n, int target){
+
+int l=0;
+int h=n-1;
+while(l<=h){
+int middle = (l+h) /2;
+
+  if(arr[middle]==target){
+     return middle;
+}
+  else if(arr[middle]>target){
+     h=middle -1;
+}
+ 
+ else{
+        l= middle +1;
+}
+}
+int main(){
+int arr[]={1,2,3,4,5,6,};
+int n = sizeof(arr)/sizeof(int);
+cout<<binarySearch(arr,n,4);
+return 0;
+}
+
+
+
+output == 3
+
+
+
+
+3) jump search
+
+
+#include<stdio.h>
+#include<math.h>
+int min(int a, int b){
+	if(b>a)
+	return a;
+	else
+	return b;
+}
+int jumpsearch(int arr[], int x, int n)
+{
+	// Finding block size to be jumped
+	int step = sqrt(n);
+
+	// Finding the block where element is
+	// present (if it is present)
+	int prev = 0;
+	while (arr[min(step, n)-1] < x)
+	{
+		prev = step;
+		step += sqrt(n);
+		if (prev >= n)
+			return -1;
+	}
+
+	// Doing a linear search for x in block
+	// beginning with prev.
+	while (arr[prev] < x)
+	{
+		prev++;
+
+		// If we reached next block or end of
+		// array, element is not present.
+		if (prev == min(step, n))
+			return -1;
+	}
+	// If element is found
+	if (arr[prev] == x)
+		return prev;
+
+	return -1;
+}
+int main()
+{
+	int arr[] = { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610};
+	int x = 55;
+	int n = sizeof(arr)/sizeof(arr[0]);
+	int index = jumpsearch(arr, x, n);
+	if(index >= 0)
+	printf("Number is at %d index",index);
+	else
+	printf("Number is not exist in the array");
+	return 0;
+}
+
+output = number 55 is At index 10
+
+
+
+
+
+B) Sorting Algorithm
+
+1) Insertion Sort
+
+// C program for insertion sort
+#include <math.h>
+#include <stdio.h>
+
+/* Function to sort an array using insertion sort*/
+void insertionSort(int arr[], int n)
+{
+	int i, key, j;
+	for (i = 1; i < n; i++) {
+		key = arr[i];
+		j = i - 1;
+
+		/* Move elements of arr[0..i-1], that are
+		greater than key, to one position ahead
+		of their current position */
+		while (j >= 0 && arr[j] > key) {
+			arr[j + 1] = arr[j];
+			j = j - 1;
+		}
+		arr[j + 1] = key;
+	}
+}
+
+// A utility function to print an array of size n
+void printArray(int arr[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+}
+
+/* Driver program to test insertion sort */
+int main()
+{
+	int arr[] = { 12, 11, 13, 5, 6 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+
+	insertionSort(arr, n);
+	printArray(arr, n);
+
+	return 0;
+}
+
+
+output == 5 6 11 12 13 
+
+
+2) selection sort
+
+// C program for implementation of selection sort
+#include <stdio.h>
+
+void swap(int *xp, int *yp)
+{
+	int temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+
+void selectionSort(int arr[], int n)
+{
+	int i, j, min_idx;
+
+	// One by one move boundary of unsorted subarray
+	for (i = 0; i < n-1; i++)
+	{
+		// Find the minimum element in unsorted array
+		min_idx = i;
+		for (j = i+1; j < n; j++)
+		if (arr[j] < arr[min_idx])
+			min_idx = j;
+
+		// Swap the found minimum element with the first element
+		if(min_idx != i)
+			swap(&arr[min_idx], &arr[i]);
+	}
+}
+
+/* Function to print an array */
+void printArray(int arr[], int size)
+{
+	int i;
+	for (i=0; i < size; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+}
+
+// Driver program to test above functions
+int main()
+{
+	int arr[] = {64, 25, 12, 22, 11};
+	int n = sizeof(arr)/sizeof(arr[0]);
+	selectionSort(arr, n);
+	printf("Sorted array: \n");
+	printArray(arr, n);
+	return 0;
+}
+
+
+output == 11 12 22 25 64 
+
+
+
+3) bubble sort
+
+
+// C program for implementation of Bubble sort
+#include <stdio.h>
+
+void swap(int* xp, int* yp)
+{
+	int temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+
+// A function to implement bubble sort
+void bubbleSort(int arr[], int n)
+{
+	int i, j;
+	for (i = 0; i < n - 1; i++)
+
+		// Last i elements are already in place
+		for (j = 0; j < n - i - 1; j++)
+			if (arr[j] > arr[j + 1])
+				swap(&arr[j], &arr[j + 1]);
+}
+
+/* Function to print an array */
+void printArray(int arr[], int size)
+{
+	int i;
+	for (i = 0; i < size; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+}
+
+// Driver program to test above functions
+int main()
+{
+	int arr[] = { 5, 1, 4, 2, 8 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+	bubbleSort(arr, n);
+	printf("Sorted array: \n");
+	printArray(arr, n);
+	return 0;
+}
+
+
+output == 1 2 4 5 8 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

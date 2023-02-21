@@ -1,0 +1,569 @@
+Name: Retesh Harichandra Doifode
+Reg No: 2020BIT034
+
+
+
+
+1)Binary Search
+
+
+#include <iostream>
+using namespace std;
+
+int BinarySearch(int arr[], int num, int beg, int end)
+{
+ int mid;
+ 
+ if (beg > end){
+  
+  cout << "Number is not found";
+  return 0;
+  
+ } else {
+  
+  mid = (beg + end) / 2;
+  
+  if(arr[mid] == num){
+   
+   cout << "Number is found at " << mid << " index \n";
+   return 0;
+  
+  } else if (num > arr[mid]) {
+   
+   BinarySearch (arr, num, mid+1, end);
+   
+  } else if (num < arr[mid]) {
+   
+   BinarySearch (arr, num, beg , mid-1);
+  }
+ }
+ 
+ 
+}
+ 
+int main() {
+ 
+ int arr[100], num, i, n, beg, end;
+ 
+ cout <<"Enter the size of an array (Max 100) \n";
+ cin >> n;
+ 
+ cout <<"Enter the sorted values \n";
+ 
+ for(i=0; i<n; i++) {
+  
+  cin >> arr[i];
+ }
+ 
+ cout <<"Enter a value to be search \n";
+ cin >> num;
+ 
+ beg = 0;
+ end = n-1;
+ 
+ BinarySearch (arr, num, beg, end);
+ 
+ return 0;
+}
+
+
+
+Output :
+
+Enter the size of an array (Max 100) : 6
+Enter the sorted values :  2   4   6   7   8   9
+Enter a value to be search :  7
+Number is found at 3 index 
+
+
+
+
+
+2)Merge Sort
+
+
+
+#include <iostream>
+using namespace std;
+void merge(int array[], int const left, int const mid,
+		int const right)
+{
+	auto const subArrayOne = mid - left + 1;
+	auto const subArrayTwo = right - mid;
+
+	
+	auto *leftArray = new int[subArrayOne],
+		*rightArray = new int[subArrayTwo];
+
+	// Copy data to temp arrays leftArray[] and rightArray[]
+	for (auto i = 0; i < subArrayOne; i++)
+		leftArray[i] = array[left + i];
+	for (auto j = 0; j < subArrayTwo; j++)
+		rightArray[j] = array[mid + 1 + j];
+
+	auto indexOfSubArrayOne
+		= 0, // Initial index of first sub-array
+		indexOfSubArrayTwo
+		= 0; // Initial index of second sub-array
+	int indexOfMergedArray
+		= left; // Initial index of merged array
+
+
+	while (indexOfSubArrayOne < subArrayOne
+		&& indexOfSubArrayTwo < subArrayTwo) {
+		if (leftArray[indexOfSubArrayOne]
+			<= rightArray[indexOfSubArrayTwo]) {
+			array[indexOfMergedArray]
+				= leftArray[indexOfSubArrayOne];
+			indexOfSubArrayOne++;
+		}
+		else {
+			array[indexOfMergedArray]
+				= rightArray[indexOfSubArrayTwo];
+			indexOfSubArrayTwo++;
+		}
+		indexOfMergedArray++;
+	}
+	
+	// left[], if there are any
+	while (indexOfSubArrayOne < subArrayOne) {
+		array[indexOfMergedArray]
+			= leftArray[indexOfSubArrayOne];
+		indexOfSubArrayOne++;
+		indexOfMergedArray++;
+	}
+	
+	while (indexOfSubArrayTwo < subArrayTwo) {
+		array[indexOfMergedArray]
+			= rightArray[indexOfSubArrayTwo];
+		indexOfSubArrayTwo++;
+		indexOfMergedArray++;
+	}
+	delete[] leftArray;
+	delete[] rightArray;
+}
+
+void mergeSort(int array[], int const begin, int const end)
+{
+	if (begin >= end)
+		return; // Returns recursively
+
+	auto mid = begin + (end - begin) / 2;
+	mergeSort(array, begin, mid);
+	mergeSort(array, mid + 1, end);
+	merge(array, begin, mid, end);
+}
+
+void printArray(int A[], int size)
+{
+	for (auto i = 0; i < size; i++)
+		cout << A[i] << " ";
+}
+
+int main()
+{
+	int arr[] = { 12, 11, 13, 5, 6, 7 };
+	auto arr_size = sizeof(arr) / sizeof(arr[0]);
+
+	cout << "Given array is \n";
+	printArray(arr, arr_size);
+
+	mergeSort(arr, 0, arr_size - 1);
+
+	cout << "\nSorted array is \n";
+	printArray(arr, arr_size);
+	return 0;
+}
+
+
+Output
+Given array is 
+12 11 13 5 6 7 
+Sorted array is 
+5 6 7 11 12 13 
+
+
+
+
+
+3) Quick Sort
+
+
+
+/* C++ implementation of QuickSort */
+#include <bits/stdc++.h>
+using namespace std;
+
+// A utility function to swap two elements
+void swap(int* a, int* b)
+{
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+
+/* This function takes last element as pivot, places
+the pivot element at its correct position in sorted
+array, and places all smaller (smaller than pivot)
+to left of pivot and all greater elements to right
+of pivot */
+int partition(int arr[], int low, int high)
+{
+	int pivot = arr[high]; // pivot
+	int i
+		= (low
+		- 1); // Index of smaller element and indicates
+				// the right position of pivot found so far
+
+	for (int j = low; j <= high - 1; j++) {
+		// If current element is smaller than the pivot
+		if (arr[j] < pivot) {
+			i++; // increment index of smaller element
+			swap(&arr[i], &arr[j]);
+		}
+	}
+	swap(&arr[i + 1], &arr[high]);
+	return (i + 1);
+}
+
+/* The main function that implements QuickSort
+arr[] --> Array to be sorted,
+low --> Starting index,
+high --> Ending index */
+void quickSort(int arr[], int low, int high)
+{
+	if (low < high) {
+		/* pi is partitioning index, arr[p] is now
+		at right place */
+		int pi = partition(arr, low, high);
+
+		// Separately sort elements before
+		// partition and after partition
+		quickSort(arr, low, pi - 1);
+		quickSort(arr, pi + 1, high);
+	}
+}
+
+/* Function to print an array */
+void printArray(int arr[], int size)
+{
+	int i;
+	for (i = 0; i < size; i++)
+		cout << arr[i] << " ";
+	cout << endl;
+}
+
+
+int main()
+{
+	int arr[] = { 10, 7, 8, 9, 1, 5 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+	quickSort(arr, 0, n - 1);
+	cout << "Sorted array: \n";
+	printArray(arr, n);
+	return 0;
+}
+
+
+
+Output
+Sorted array: 
+1 5 7 8 9 10 
+
+
+
+4)Strassens matrix multiplication
+
+
+
+// CPP program to implement Strassen’s Matrix
+// Multiplication Algorithm
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long lld;
+
+/* Strassen's Algorithm for matrix multiplication
+Complexity: O(n^2.808) */
+
+inline lld** MatrixMultiply(lld** a, lld** b, int n,
+									int l, int m)
+{
+	lld** c = new lld*[n];
+	for (int i = 0; i < n; i++)
+		c[i] = new lld[m];
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			c[i][j] = 0;
+			for (int k = 0; k < l; k++) {
+				c[i][j] += a[i][k] * b[k][j];
+			}
+		}
+	}
+	return c;
+}
+
+inline lld** Strassen(lld** a, lld** b, int n,
+								int l, int m)
+{
+	if (n == 1 || l == 1 || m == 1)
+		return MatrixMultiply(a, b, n, l, m);
+
+	lld** c = new lld*[n];
+	for (int i = 0; i < n; i++)
+		c[i] = new lld[m];
+
+	int adjN = (n >> 1) + (n & 1);
+	int adjL = (l >> 1) + (l & 1);
+	int adjM = (m >> 1) + (m & 1);
+
+	lld**** As = new lld***[2];
+	for (int x = 0; x < 2; x++) {
+		As[x] = new lld**[2];
+		for (int y = 0; y < 2; y++) {
+			As[x][y] = new lld*[adjN];
+			for (int i = 0; i < adjN; i++) {
+				As[x][y][i] = new lld[adjL];
+				for (int j = 0; j < adjL; j++) {
+					int I = i + (x & 1) * adjN;
+					int J = j + (y & 1) * adjL;
+					As[x][y][i][j] = (I < n && J < l) ? a[I][J] : 0;
+				}
+			}
+		}
+	}
+
+	lld**** Bs = new lld***[2];
+	for (int x = 0; x < 2; x++) {
+		Bs[x] = new lld**[2];
+		for (int y = 0; y < 2; y++) {
+			Bs[x][y] = new lld*[adjN];
+			for (int i = 0; i < adjL; i++) {
+				Bs[x][y][i] = new lld[adjM];
+				for (int j = 0; j < adjM; j++) {
+					int I = i + (x & 1) * adjL;
+					int J = j + (y & 1) * adjM;
+					Bs[x][y][i][j] = (I < l && J < m) ? b[I][J] : 0;
+				}
+			}
+		}
+	}
+
+	lld*** s = new lld**[10];
+	for (int i = 0; i < 10; i++) {
+		switch (i) {
+		case 0:
+			s[i] = new lld*[adjL];
+			for (int j = 0; j < adjL; j++) {
+				s[i][j] = new lld[adjM];
+				for (int k = 0; k < adjM; k++) {
+					s[i][j][k] = Bs[0][1][j][k] - Bs[1][1][j][k];
+				}
+			}
+			break;
+		case 1:
+			s[i] = new lld*[adjN];
+			for (int j = 0; j < adjN; j++) {
+				s[i][j] = new lld[adjL];
+				for (int k = 0; k < adjL; k++) {
+					s[i][j][k] = As[0][0][j][k] + As[0][1][j][k];
+				}
+			}
+			break;
+		case 2:
+			s[i] = new lld*[adjN];
+			for (int j = 0; j < adjN; j++) {
+				s[i][j] = new lld[adjL];
+				for (int k = 0; k < adjL; k++) {
+					s[i][j][k] = As[1][0][j][k] + As[1][1][j][k];
+				}
+			}
+			break;
+		case 3:
+			s[i] = new lld*[adjL];
+			for (int j = 0; j < adjL; j++) {
+				s[i][j] = new lld[adjM];
+				for (int k = 0; k < adjM; k++) {
+					s[i][j][k] = Bs[1][0][j][k] - Bs[0][0][j][k];
+				}
+			}
+			break;
+		case 4:
+			s[i] = new lld*[adjN];
+			for (int j = 0; j < adjN; j++) {
+				s[i][j] = new lld[adjL];
+				for (int k = 0; k < adjL; k++) {
+					s[i][j][k] = As[0][0][j][k] + As[1][1][j][k];
+				}
+			}
+			break;
+		case 5:
+			s[i] = new lld*[adjL];
+			for (int j = 0; j < adjL; j++) {
+				s[i][j] = new lld[adjM];
+				for (int k = 0; k < adjM; k++) {
+					s[i][j][k] = Bs[0][0][j][k] + Bs[1][1][j][k];
+				}
+			}
+			break;
+		case 6:
+			s[i] = new lld*[adjN];
+			for (int j = 0; j < adjN; j++) {
+				s[i][j] = new lld[adjL];
+				for (int k = 0; k < adjL; k++) {
+					s[i][j][k] = As[0][1][j][k] - As[1][1][j][k];
+				}
+			}
+			break;
+		case 7:
+			s[i] = new lld*[adjL];
+			for (int j = 0; j < adjL; j++) {
+				s[i][j] = new lld[adjM];
+				for (int k = 0; k < adjM; k++) {
+					s[i][j][k] = Bs[1][0][j][k] + Bs[1][1][j][k];
+				}
+			}
+			break;
+		case 8:
+			s[i] = new lld*[adjN];
+			for (int j = 0; j < adjN; j++) {
+				s[i][j] = new lld[adjL];
+				for (int k = 0; k < adjL; k++) {
+					s[i][j][k] = As[0][0][j][k] - As[1][0][j][k];
+				}
+			}
+			break;
+		case 9:
+			s[i] = new lld*[adjL];
+			for (int j = 0; j < adjL; j++) {
+				s[i][j] = new lld[adjM];
+				for (int k = 0; k < adjM; k++) {
+					s[i][j][k] = Bs[0][0][j][k] + Bs[0][1][j][k];
+				}
+			}
+			break;
+		}
+	}
+
+	lld*** p = new lld**[7];
+	p[0] = Strassen(As[0][0], s[0], adjN, adjL, adjM);
+	p[1] = Strassen(s[1], Bs[1][1], adjN, adjL, adjM);
+	p[2] = Strassen(s[2], Bs[0][0], adjN, adjL, adjM);
+	p[3] = Strassen(As[1][1], s[3], adjN, adjL, adjM);
+	p[4] = Strassen(s[4], s[5], adjN, adjL, adjM);
+	p[5] = Strassen(s[6], s[7], adjN, adjL, adjM);
+	p[6] = Strassen(s[8], s[9], adjN, adjL, adjM);
+
+	for (int i = 0; i < adjN; i++) {
+		for (int j = 0; j < adjM; j++) {
+			c[i][j] = p[4][i][j] + p[3][i][j] - p[1][i][j] + p[5][i][j];
+			if (j + adjM < m)
+				c[i][j + adjM] = p[0][i][j] + p[1][i][j];
+			if (i + adjN < n)
+				c[i + adjN][j] = p[2][i][j] + p[3][i][j];
+			if (i + adjN < n && j + adjM < m)
+				c[i + adjN][j + adjM] = p[4][i][j] + p[0][i][j] - p[2][i][j] - p[6][i][j];
+		}
+	}
+
+	for (int x = 0; x < 2; x++) {
+		for (int y = 0; y < 2; y++) {
+			for (int i = 0; i < adjN; i++) {
+				delete[] As[x][y][i];
+			}
+			delete[] As[x][y];
+		}
+		delete[] As[x];
+	}
+	delete[] As;
+
+	for (int x = 0; x < 2; x++) {
+		for (int y = 0; y < 2; y++) {
+			for (int i = 0; i < adjL; i++) {
+				delete[] Bs[x][y][i];
+			}
+			delete[] Bs[x][y];
+		}
+		delete[] Bs[x];
+	}
+	delete[] Bs;
+
+	for (int i = 0; i < 10; i++) {
+		switch (i) {
+		case 0:
+		case 3:
+		case 5:
+		case 7:
+		case 9:
+			for (int j = 0; j < adjL; j++) {
+				delete[] s[i][j];
+			}
+			break;
+		case 1:
+		case 2:
+		case 4:
+		case 6:
+		case 8:
+			for (int j = 0; j < adjN; j++) {
+				delete[] s[i][j];
+			}
+			break;
+		}
+		delete[] s[i];
+	}
+	delete[] s;
+
+	for (int i = 0; i < 7; i++) {
+		for (int j = 0; j < (n >> 1); j++) {
+			delete[] p[i][j];
+		}
+		delete[] p[i];
+	}
+	delete[] p;
+
+	return c;
+}
+
+int main()
+{
+	lld** matA;
+	matA = new lld*[2];
+	for (int i = 0; i < 2; i++)
+		matA[i] = new lld[3];
+	matA[0][0] = 1;
+	matA[0][1] = 2;
+	matA[0][2] = 3;
+	matA[1][0] = 4;
+	matA[1][1] = 5;
+	matA[1][2] = 6;
+
+	lld** matB;
+	matB = new lld*[3];
+	for (int i = 0; i < 3; i++)
+		matB[i] = new lld[2];
+	matB[0][0] = 7;
+	matB[0][1] = 8;
+	matB[1][0] = 9;
+	matB[1][1] = 10;
+	matB[2][0] = 11;
+	matB[2][1] = 12;
+
+	lld** matC = Strassen(matA, matB, 2, 3, 2);
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			printf("%lld ", matC[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+
+output:
+
+58 64 
+139 154 
+
+
+
